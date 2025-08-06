@@ -1,12 +1,12 @@
 from src.models.user import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class Agendamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'), nullable=False)
     servico_id = db.Column(db.Integer, db.ForeignKey('servico.id'), nullable=False)
     data_agendamento = db.Column(db.DateTime, nullable=False)
-    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_criacao = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     status = db.Column(db.String(20), default='agendado')  # agendado, concluido, cancelado
     observacoes = db.Column(db.Text, nullable=True)
 
