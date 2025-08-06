@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Agendamento - Salão de Beleza</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cut"></i> Salão Beauty</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item active" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="menu-item" data-page="agendamentos">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agendamentos</span>
+                </li>
+                <li class="menu-item" data-page="clientes">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </li>
+                <li class="menu-item" data-page="servicos">
+                    <i class="fas fa-spa"></i>
+                    <span>Serviços</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="page-title">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span>Administrador</span>
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-clientes">0</h3>
+                                <p>Total de Clientes</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="agendamentos-hoje">0</h3>
+                                <p>Agendamentos Hoje</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-servicos">0</h3>
+                                <p>Serviços Ativos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="receita-mes">R$ 0,00</h3>
+                                <p>Receita do Mês</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>Agendamentos de Hoje</h3>
+                            <div id="agendamentos-hoje-lista" class="agendamentos-lista">
+                                <!-- Agendamentos serão carregados aqui -->
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Próximos Agendamentos</h3>
+                            <div id="proximos-agendamentos" class="agendamentos-lista">
+                                <!-- Próximos agendamentos serão carregados aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agendamentos Page -->
+                <div id="agendamentos-page" class="page">
+                    <div class="page-header">
+                        <h2>Gerenciar Agendamentos</h2>
+                        <button class="btn btn-primary" onclick="abrirModalAgendamento()">
+                            <i class="fas fa-plus"></i> Novo Agendamento
+                        </button>
+                    </div>
+                    
+                    <div class="filters">
+                        <input type="date" id="filtro-data" placeholder="Filtrar por data">
+                        <select id="filtro-status">
+                            <option value="">Todos os status</option>
+                            <option value="agendado">Agendado</option>
+                            <option value="concluido">Concluído</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="aplicarFiltros()">Filtrar</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="tabela-agendamentos">
+                            <thead>
+                                <tr>
+                                    <th>Data/Hora</th>
+                                    <th>Cliente</th>
+                                    <th>Serviço</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Agendamentos serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Clientes Page -->
+                <div id="clientes-page" class="page">
+                    <div class="page-header">
+                        <h2>Gerenciar Clientes</h2>
+                        <button class="btn btn-primary" onclick="abrirModalCliente()">
+                            <i class="fas fa-plus"></i> Novo Cliente
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="tabela-clientes">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>Email</th>
+                                    <th>Data Cadastro</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Clientes serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Serviços Page -->
+                <div id="servicos-page" class="page">
+                    <div class="page-header">
+                        <h2>Gerenciar Serviços</h2>
+                        <button class="btn btn-primary" onclick="abrirModalServico()">
+                            <i class="fas fa-plus"></i> Novo Serviço
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="tabela-servicos">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Descrição</th>
+                                    <th>Preço</th>
+                                    <th>Duração</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Serviços serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal Cliente -->
+    <div id="modal-cliente" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-cliente-titulo">Novo Cliente</h3>
+                <span class="close" onclick="fecharModal('modal-cliente')">&times;</span>
+            </div>
+            <form id="form-cliente">
+                <div class="form-group">
+                    <label for="cliente-nome">Nome *</label>
+                    <input type="text" id="cliente-nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="cliente-telefone">Telefone *</label>
+                    <input type="tel" id="cliente-telefone" required>
+                </div>
+                <div class="form-group">
+                    <label for="cliente-email">Email</label>
+                    <input type="email" id="cliente-email">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="fecharModal('modal-cliente')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Serviço -->
+    <div id="modal-servico" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-servico-titulo">Novo Serviço</h3>
+                <span class="close" onclick="fecharModal('modal-servico')">&times;</span>
+            </div>
+            <form id="form-servico">
+                <div class="form-group">
+                    <label for="servico-nome">Nome *</label>
+                    <input type="text" id="servico-nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="servico-descricao">Descrição</label>
+                    <textarea id="servico-descricao" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="servico-preco">Preço (R$) *</label>
+                        <input type="number" id="servico-preco" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servico-duracao">Duração (min) *</label>
+                        <input type="number" id="servico-duracao" min="1" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="fecharModal('modal-servico')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Agendamento -->
+    <div id="modal-agendamento" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-agendamento-titulo">Novo Agendamento</h3>
+                <span class="close" onclick="fecharModal('modal-agendamento')">&times;</span>
+            </div>
+            <form id="form-agendamento">
+                <div class="form-group">
+                    <label for="agendamento-cliente">Cliente *</label>
+                    <select id="agendamento-cliente" required>
+                        <option value="">Selecione um cliente</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="agendamento-servico">Serviço *</label>
+                    <select id="agendamento-servico" required>
+                        <option value="">Selecione um serviço</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="agendamento-data">Data *</label>
+                        <input type="date" id="agendamento-data" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agendamento-hora">Hora *</label>
+                        <input type="time" id="agendamento-hora" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="agendamento-observacoes">Observações</label>
+                    <textarea id="agendamento-observacoes" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="fecharModal('modal-agendamento')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
